@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+</head>
+
+<body style="background-image: url(azul-blanca-cielo-naturaleza-wallpaper-preview.jpg); background-size: cover;">
+
+  <div class="container p-5">
+    <div class="row pt-5" style="justify-content: center;">
+      <div class="col-8 bg-primary p-5 text-white rounded-lg">
+        <div class="encabezado ml-4 ">
+          <h2>Climapp Cl</h2>
+        </div>
+        <div class="barra d-flex bg-white m-4 font-weight-bold">
+          <input class="form-control me-2" placeholder="Escriba la ciudad que busca" aria-label="Search">
+          <button id="enviar" class="btn btn-outline-info">Seleccionar</button>
+        </div>
+        <div class="cuerpo">
+          <div class="row" id="detalle">
+          </div>
+        </div>
+        <div class="footer text-center font-weight-bold">
+          <button type="button" id="clean" class="btn btn-secondary">Limpiar</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+
+
+      $('#enviar').on('click', function () {
+
+        var busqueda = $('input').val();
+
+        $.get(`https://api.openweathermap.org/data/2.5/weather?q=${busqueda},cl&&appid=cdd5eacf99cc9842023d9452817d9fa0`, function (res) {
+          $('#detalle').html(`
+            <div class="col-7 ml-4">
+                <h5>${res.name}</h5>
+                <p style="margin:auto;">Temperatura: ${(res.main.temp - 273.15).toFixed(1)}°C</p>
+                <p>Ubicación : Longitud ${res.coord.lon} , Latitud ${res.coord.lat}</p>
+              </div>
+            `)
+        }, 'json');
+      });
+      // don't forget to return false so the page doesn't refresh
+
+      $('#clean').on('click', function () {
+        $('input').val('');
+        $('#detalle').html(``);
+      });
+      return false;
+    });
+
+  </script>
+</body>
+
+</html>
